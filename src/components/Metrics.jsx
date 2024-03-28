@@ -1,3 +1,5 @@
+import ChartComponent from "./ChartComponent";
+
 const Metrics = () => {
   return (
     <div className="mx-5 mt-5 bg-white flex flex-col">
@@ -9,10 +11,10 @@ const Metrics = () => {
       </div>
       <div className="bg-metrics_inner border border-t-0 border-gray4 rounded-b-lg">
         <div className="mx-5 my-4 grid grid-cols-2 grid-rows-2 gap-5">
-          <div className="h-40 bg-red-200 border border-gray4 rounded-lg"></div>
-          <div className="h-40 bg-green-200 border border-gray4 rounded-lg"></div>
-          <div className="h-40 bg-yellow-200 border border-gray4 rounded-lg"></div>
-          <div className="h-40 bg-blue-200 border border-gray4 rounded-lg"></div>
+          <ChartComponent ver={0} />
+          <ChartComponent ver={1} />
+          <ChartComponent ver={2} />
+          <ChartComponent ver={3} isFill={true} />
         </div>
       </div>
     </div>
