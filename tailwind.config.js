@@ -15,6 +15,8 @@ export default {
         gray10: "#5E7BAA",
         gray6: "#A8C3E8",
         gray3: "#E0ECFD",
+        active_tab: "#5501E1",
+        checkmark: "#2300F7",
       },
     },
   },

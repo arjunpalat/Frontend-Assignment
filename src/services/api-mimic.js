@@ -71,7 +71,6 @@ export class MimicLogs {
       timeout = setTimeout(generateNextLog, 10 + Math.random() * 1990);
     };
     timeout = setTimeout(generateNextLog, 10 + Math.random() * 1990);
-
     return () => clearInterval(timeout);
   }
 }
