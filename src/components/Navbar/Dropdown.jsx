@@ -1,13 +1,11 @@
 import { dropdownOptions } from ".";
 import { useAppDispatch, useAppState } from "../../AppContext";
+import { useNavigate } from "react-router-dom";
 
-const Dropdown = ({ handleToggle }) => {
-  const dispatch = useAppDispatch();
-  const { selectorOption } = useAppState();
+const Dropdown = ({ handleToggle, selectorOption }) => {
+  const navigate = useNavigate();
   const handleSelectorOption = (option) => {
-    if (option.value !== selectorOption.value) {
-      dispatch({ type: "SET_SELECTOR_OPTION", payload: option });
-    }
+    navigate(`?query=${option.query}`);
     handleToggle();
   };
 
