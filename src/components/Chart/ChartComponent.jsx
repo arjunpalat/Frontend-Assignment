@@ -13,6 +13,7 @@ import {
 } from "chart.js";
 import "chartjs-adapter-date-fns";
 import { Line } from "react-chartjs-2";
+import { useRef } from "react";
 
 ChartJS.register(
   TimeScale,
@@ -30,7 +31,141 @@ const ChartComponent = ({ chartData }) => {
 
   console.log("Reload!");
 
-  const config = getChartConfig(chartData, selectorOption);
+  const fullData = chartData; // The full line data
+  const highlightedData = useRef([]); // The highlighted data (initially empty)
+  const selectedPoints = useRef([]); // The selected points (initially empty)
+
+  const config = getChartConfig(fullData, selectorOption);
+
+  // Dataset for the selected points
+  config.data.datasets.push({
+    label: "Selected Points",
+    data: selectedPoints.current.map((point) => point.y),
+    fill: false,
+    borderColor: "#F97316",
+
+    borderWidth: 4,
+    pointRadius: 3,
+    showLine: false,
+  });
+
+  // Dataset for the highlighted section
+  config.data.datasets.push({
+    label: "Highlighted Section",
+    data: highlightedData.current.map((point) => point.y),
+    fill: true,
+    borderColor: "transparent", // Hide the border color
+    backgroundColor: "rgba(0, 0, 255, 0.1)", // Set the fill color
+    pointRadius: 0, // Hide the points
+  });
+
+  config.options.onClick = function (event, elements) {
+    // If a point was clicked
+    if (elements.length > 0) {
+      const firstPoint = elements[0];
+      console.log(elements);
+      const label = this.data.labels[firstPoint.index];
+      const value =
+        this.data.datasets[firstPoint.datasetIndex].data[firstPoint.index];
+      const color = this.data.datasets[firstPoint.datasetIndex].backgroundColor;
+
+      // If the selectedPoints array is empty or the clicked point is on the same line as the last clicked point
+      // If selectedPoints is empty
+      if (selectedPoints.current.length === 0) {
+        // Simply add the selected point to it
+        selectedPoints.current.push({
+          x: label,
+          y: value,
+          datasetIndex: firstPoint.datasetIndex,
+          index: firstPoint.index,
+        });
+      }
+      // If selectedPoints has 1 element
+      else if (selectedPoints.current.length === 1) {
+        const existingPoint = selectedPoints.current[0];
+
+        // Check whether it's dataindex is same as the current clicked element's (ensuring they are from the same line)
+        // and it's not the same already added point too
+        if (
+          existingPoint.datasetIndex === firstPoint.datasetIndex &&
+          existingPoint.index !== firstPoint.index
+        ) {
+          // If yes, add to it
+          console.log("Added to selected points");
+          selectedPoints.current.push({
+            x: label,
+            y: value,
+            datasetIndex: firstPoint.datasetIndex,
+            index: firstPoint.index,
+          });
+        } else {
+          // Otherwise replace the selectedPoints array with the newly clicked point only
+          selectedPoints.current = [
+            {
+              x: label,
+              y: value,
+              datasetIndex: firstPoint.datasetIndex,
+              index: firstPoint.index,
+            },
+          ];
+        }
+      }
+      // If selectedPoints has 2 elements
+      else if (selectedPoints.current.length === 2) {
+        // Just replace the selectedPoints with only the newly clicked
+        selectedPoints.current = [
+          {
+            x: label,
+            y: value,
+            datasetIndex: firstPoint.datasetIndex,
+            index: firstPoint.index,
+          },
+        ];
+        // Also replace the highlightedData array to empty
+        highlightedData.current = [];
+      }
+
+      console.log("Selected points are: ", selectedPoints.current);
+
+      // If there are two points in the selectedPoints array
+      if (selectedPoints.current.length === 2) {
+        // Add all the points between the two clicked points to the highlightedData array
+        const index1 = selectedPoints.current[0].index;
+        const index2 = selectedPoints.current[1].index;
+        const startIndex = Math.min(index1, index2);
+        const endIndex = Math.max(index1, index2);
+        const datasetIndex = selectedPoints.current[0].datasetIndex;
+        console.log(index1, index2);
+        for (let i = startIndex; i <= endIndex; i++) {
+          console.log(i);
+          highlightedData.current.push({
+            x: null,
+            y: this.data.datasets[datasetIndex].data[i],
+          });
+          console.log(highlightedData.current);
+        }
+      }
+      // Update the datasets in the Chart.js configuration
+      const selectedDataset = this.data.datasets.find(
+        (dataset) => dataset.label === "Selected Points"
+      );
+      selectedDataset.data = selectedPoints.current.map((point) => point.y);
+      selectedDataset.backgroundColor = color; // Update the color of the selected points to match the color of the selected line
+
+      const highlightedDataset = this.data.datasets.find(
+        (dataset) => dataset.label === "Highlighted Section"
+      );
+      highlightedDataset.data = highlightedData.current.map((point) => point.y);
+      highlightedDataset.backgroundColor = color; // Update the fill color of the highlighted section to match the color of the selected line
+
+      this.update(); // Redraw the chart with the new data
+    }
+  };
+
+  config.options.onDrag = function (event) {
+    // Move the highlighted points when they are dragged
+    // ...
+  };
 
   return (
     <div>
@@ -39,7 +174,11 @@ const ChartComponent = ({ chartData }) => {
           <div className="text-start text-gray12 text-sm font-semibold">
             {chartData.name}
           </div>
-          <Line className="max-h-56" options={config.options} data={config.data} />
+          <Line
+            className="max-h-56"
+            options={config.options}
+            data={config.data}
+          />
           <div className="flex text-sm font-semibold">
             {chartData.graphLines.map(({ name }) => (
               <div className="flex py-0.5 pr-6 pl-0.5 items-center gap-1.5">

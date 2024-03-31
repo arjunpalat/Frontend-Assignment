@@ -15,20 +15,20 @@ const getChartBackgroundColor = (name) => {
 const getChartBorderColor = (name) => {
   const borderColor =
     name === "Limits"
-      ? "green"
+      ? "#059669"
       : name === "Requested" || name === "Read"
-      ? "blue"
-      : "red";
+      ? "#2563EB"
+      : "#DC2626";
   return borderColor;
 };
 
 export const getLabelColor = (name) => {
   const labelColor =
     name === "Limits"
-      ? "bg-green-600"
+      ? "#059669"
       : name === "Requested" || name === "Read"
-      ? "bg-blue-600"
-      : "bg-red-600";
+      ? "#2563EB"
+      : "#DC2626";
   return labelColor;
 };
 
