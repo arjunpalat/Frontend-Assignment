@@ -58,6 +58,11 @@ export const getChartConfig = (chartData, chartTimeStamps) => {
       },
       tooltip: {
         enabled: true,
+        callbacks: {
+          title: function () {
+            return "Point";
+          },
+        },
       },
     },
     scales: {

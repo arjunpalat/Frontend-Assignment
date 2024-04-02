@@ -5,8 +5,6 @@ import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
 
 const Selector = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const location = useLocation();
-  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const [selectorOption, setSelectorOption] = useState(null);
 

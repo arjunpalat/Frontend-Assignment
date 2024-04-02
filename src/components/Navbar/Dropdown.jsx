@@ -1,5 +1,4 @@
 import { dropdownOptions } from ".";
-import { useAppDispatch, useAppState } from "../../AppContext";
 import { useNavigate } from "react-router-dom";
 
 const Dropdown = ({ handleToggle, selectorOption }) => {

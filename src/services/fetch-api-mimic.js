@@ -1,23 +1,10 @@
 import { MimicLogs } from "./api-mimic";
-import { lastLogsTsRange } from "../components/Logs";
 
-export const ISOtoTimestamp = (iso) => {
-  return new Date(iso).getTime();
-};
-
-export const fetcherLogs = async (logs, to, from, query) => {
+export const fetcherLogs = async (logs, to, from) => {
   try {
-    const toTs = ISOtoTimestamp(to);
-    const fromTs = ISOtoTimestamp(from);
-    const tsDifference =
-      query === "range" ? toTs - fromTs : lastLogsTsRange[query];
+    const tsDifference = to - from;
+    const offsetTs = logs.length > 0 ? logs[0].timestamp : to;
 
-    const offsetTs =
-      logs.length > 0
-        ? logs[0].timestamp
-        : query !== "range"
-        ? Date.now()
-        : toTs;
     const previousLogs = (
       await MimicLogs.fetchPreviousLogs({
         startTs: offsetTs - tsDifference / 10,

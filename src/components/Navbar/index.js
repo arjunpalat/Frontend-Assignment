@@ -4,6 +4,7 @@ import logs_active from "../../assets/list-active.svg";
 import metrics from "../../assets/metrics.svg";
 import metrics_active from "../../assets/metrics-active.svg";
 import chevron from "../../assets/chevron.svg";
+import calendar from "../../assets/calendar.svg";
 
 const dropdownOptions = [
   { label: "Last 5 minutes", value: 5 * 60 * 1000, query: "last-5-minutes" },
@@ -22,6 +23,7 @@ export {
   metrics_active,
   chevron,
   dropdownOptions,
+  calendar
 };
 
 export const validateQuery = (query) => {

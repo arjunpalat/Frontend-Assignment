@@ -14,8 +14,8 @@ import {
 import "chartjs-adapter-date-fns";
 import { Line } from "react-chartjs-2";
 import { useRef } from "react";
-import { ISOtoTimestamp } from "../../services/fetch-api-mimic.js";
 import { useNavigate } from "react-router-dom";
+import { generateEncodedUrl } from "../../utils/converters.js";
 
 ChartJS.register(
   TimeScale,
@@ -29,15 +29,6 @@ ChartJS.register(
 );
 
 const ChartComponent = ({ chartData, chartTimeStamps }) => {
-  console.log("Reload!");
-
-  function toLocaleISOString(date) {
-    var offsetMs = date.getTimezoneOffset() * 60 * 1000;
-    var localDate = new Date(date.getTime() - offsetMs);
-    var iso = localDate.toISOString();
-    return iso.slice(0, 19);
-  }
-
   const fullData = chartData; // The full line data
   const highlightedData = useRef([]);
   const selectedPoints = useRef([]);
@@ -50,22 +41,10 @@ const ChartComponent = ({ chartData, chartTimeStamps }) => {
 
     // Get the from and to timestamps
     const fromTimestamp = sortedPoints[0].y.x;
-    console.log(fromTimestamp);
     const toTimestamp = sortedPoints[1].y.x;
 
-    // Convert timestamps to ISO 8601 format and remove milliseconds
-    const from = toLocaleISOString(new Date(fromTimestamp)).split(".")[0];
-    const to = toLocaleISOString(new Date(toTimestamp)).split(".")[0];
-
-    console.log(from, to);
-
-    // Encode the timestamps
-    const encodedFrom = encodeURIComponent(from);
-    console.log(encodedFrom);
-    const encodedTo = encodeURIComponent(to);
-
     // Construct the URL
-    const url = `/logs?query=range&from=${encodedFrom}&to=${encodedTo}`;
+    const url = generateEncodedUrl(fromTimestamp, toTimestamp);
     navigate(url);
   };
 
@@ -89,7 +68,6 @@ const ChartComponent = ({ chartData, chartTimeStamps }) => {
     data: highlightedData.current.map((point) => point.y),
     fill: true,
     borderColor: "transparent", // Hide the border color
-    backgroundColor: "rgba(0, 0, 255, 0.1)", // Set the fill color
     pointRadius: 0, // Hide the points
   });
 
@@ -97,7 +75,7 @@ const ChartComponent = ({ chartData, chartTimeStamps }) => {
     // If a point was clicked
     if (elements.length > 0) {
       const firstPoint = elements[0];
-      console.log(elements);
+
       const label = this.data.labels[firstPoint.index];
       const value =
         this.data.datasets[firstPoint.datasetIndex].data[firstPoint.index];
@@ -125,7 +103,6 @@ const ChartComponent = ({ chartData, chartTimeStamps }) => {
           existingPoint.index !== firstPoint.index
         ) {
           // If yes, add to it
-          console.log("Added to selected points");
           selectedPoints.current.push({
             x: label,
             y: value,
@@ -160,8 +137,6 @@ const ChartComponent = ({ chartData, chartTimeStamps }) => {
         highlightedData.current = [];
       }
 
-      console.log("Selected points are: ", selectedPoints.current);
-
       // If there are two points in the selectedPoints array
       if (selectedPoints.current.length === 2) {
         // Add all the points between the two clicked points to the highlightedData array
@@ -170,14 +145,12 @@ const ChartComponent = ({ chartData, chartTimeStamps }) => {
         const startIndex = Math.min(index1, index2);
         const endIndex = Math.max(index1, index2);
         const datasetIndex = selectedPoints.current[0].datasetIndex;
-        console.log(index1, index2);
+
         for (let i = startIndex; i <= endIndex; i++) {
-          console.log(i);
           highlightedData.current.push({
             x: null,
             y: this.data.datasets[datasetIndex].data[i],
           });
-          console.log(highlightedData.current);
         }
         setShowLogs(true);
       }
@@ -224,7 +197,10 @@ const ChartComponent = ({ chartData, chartTimeStamps }) => {
           />
           <div className="flex text-sm font-semibold">
             {chartData.graphLines.map(({ name }) => (
-              <div className="flex py-0.5 pr-6 pl-0.5 items-center gap-1.5">
+              <div
+                className="flex py-0.5 pr-6 pl-0.5 items-center gap-1.5"
+                key={name}
+              >
                 <div
                   className={`w-2.5 h-2.5 ${getLabelColor(name)} rounded-sm`}
                 ></div>

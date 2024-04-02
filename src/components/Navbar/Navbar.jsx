@@ -1,6 +1,7 @@
 import { logo, metrics, metrics_active, logs, logs_active } from "./index.js";
 import LinkButton from "./LinkButtons.jsx";
 import Selector from "./Selector.jsx";
+import RangePicker from "./RangePicker.jsx";
 
 const Navbar = () => {
   return (
@@ -23,7 +24,10 @@ const Navbar = () => {
             />
           </div>
         </div>
-        <Selector />
+        <div className="flex gap-5 items-center">
+          <RangePicker />
+          <Selector />
+        </div>
       </div>
     </nav>
   );
