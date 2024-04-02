@@ -5,7 +5,9 @@ import { useNavigate } from "react-router-dom";
 const Dropdown = ({ handleToggle, selectorOption }) => {
   const navigate = useNavigate();
   const handleSelectorOption = (option) => {
-    navigate(`?query=${option.query}`);
+    if (option.query !== selectorOption.query) {
+      navigate(`?query=${option.query}`);
+    }
     handleToggle();
   };
 

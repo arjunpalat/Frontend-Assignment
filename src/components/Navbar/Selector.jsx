@@ -1,8 +1,7 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Dropdown from "./Dropdown";
 import { chevron, validateQuery } from "./index.js";
 import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
-import { set } from "date-fns";
 
 const Selector = () => {
   const [isOpen, setIsOpen] = useState(false);

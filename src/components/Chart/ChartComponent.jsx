@@ -1,5 +1,5 @@
 import { getChartConfig, getLabelColor } from "./index.js";
-import { useAppState } from "../../AppContext";
+import { useState } from "react";
 import {
   Chart as ChartJS,
   Filler,
@@ -14,6 +14,8 @@ import {
 import "chartjs-adapter-date-fns";
 import { Line } from "react-chartjs-2";
 import { useRef } from "react";
+import { ISOtoTimestamp } from "../../services/fetch-api-mimic.js";
+import { useNavigate } from "react-router-dom";
 
 ChartJS.register(
   TimeScale,
@@ -26,16 +28,48 @@ ChartJS.register(
   Filler
 );
 
-const ChartComponent = ({ chartData }) => {
-  const { selectorOption } = useAppState();
-
+const ChartComponent = ({ chartData, chartTimeStamps }) => {
   console.log("Reload!");
 
-  const fullData = chartData; // The full line data
-  const highlightedData = useRef([]); // The highlighted data (initially empty)
-  const selectedPoints = useRef([]); // The selected points (initially empty)
+  function toLocaleISOString(date) {
+    var offsetMs = date.getTimezoneOffset() * 60 * 1000;
+    var localDate = new Date(date.getTime() - offsetMs);
+    var iso = localDate.toISOString();
+    return iso.slice(0, 19);
+  }
 
-  const config = getChartConfig(fullData, selectorOption);
+  const fullData = chartData; // The full line data
+  const highlightedData = useRef([]);
+  const selectedPoints = useRef([]);
+  const [showLogs, setShowLogs] = useState(false);
+  const navigate = useNavigate();
+
+  const handleViewLogs = () => {
+    // Sort the selected points by timestamp
+    const sortedPoints = selectedPoints.current.sort((a, b) => b.x - a.x);
+
+    // Get the from and to timestamps
+    const fromTimestamp = sortedPoints[0].y.x;
+    console.log(fromTimestamp);
+    const toTimestamp = sortedPoints[1].y.x;
+
+    // Convert timestamps to ISO 8601 format and remove milliseconds
+    const from = toLocaleISOString(new Date(fromTimestamp)).split(".")[0];
+    const to = toLocaleISOString(new Date(toTimestamp)).split(".")[0];
+
+    console.log(from, to);
+
+    // Encode the timestamps
+    const encodedFrom = encodeURIComponent(from);
+    console.log(encodedFrom);
+    const encodedTo = encodeURIComponent(to);
+
+    // Construct the URL
+    const url = `/logs?query=range&from=${encodedFrom}&to=${encodedTo}`;
+    navigate(url);
+  };
+
+  const config = getChartConfig(fullData, chartTimeStamps);
 
   // Dataset for the selected points
   config.data.datasets.push({
@@ -121,6 +155,7 @@ const ChartComponent = ({ chartData }) => {
             index: firstPoint.index,
           },
         ];
+        setShowLogs(false);
         // Also replace the highlightedData array to empty
         highlightedData.current = [];
       }
@@ -144,6 +179,7 @@ const ChartComponent = ({ chartData }) => {
           });
           console.log(highlightedData.current);
         }
+        setShowLogs(true);
       }
       // Update the datasets in the Chart.js configuration
       const selectedDataset = this.data.datasets.find(
@@ -162,17 +198,24 @@ const ChartComponent = ({ chartData }) => {
     }
   };
 
-  config.options.onDrag = function (event) {
-    // Move the highlighted points when they are dragged
-    // ...
-  };
-
   return (
     <div>
       {chartData && (
         <div className="flex flex-col border border-gray4 rounded-lg px-4 py-4 gap-5">
-          <div className="text-start text-gray12 text-sm font-semibold">
-            {chartData.name}
+          <div className="flex justify-between">
+            <div className="text-start text-gray12 text-sm font-semibold">
+              {chartData.name}
+            </div>
+            {showLogs && (
+              <div>
+                <button
+                  onClick={handleViewLogs}
+                  className="text-white text-xs px-1 py-1 bg-black rounded-lg "
+                >
+                  View Logs
+                </button>
+              </div>
+            )}
           </div>
           <Line
             className="max-h-56"

@@ -25,17 +25,17 @@ const getChartBorderColor = (name) => {
 export const getLabelColor = (name) => {
   const labelColor =
     name === "Limits"
-      ? "#059669"
+      ? "bg-green-600"
       : name === "Requested" || name === "Read"
-      ? "#2563EB"
-      : "#DC2626";
+      ? "bg-blue-600"
+      : "bg-red-600";
   return labelColor;
 };
 
-export const getChartConfig = (chartData, selectorOption) => {
+export const getChartConfig = (chartData, chartTimeStamps) => {
   const lines = chartData.graphLines;
   const data = {
-    labels: [Date.now() - selectorOption.value, Date.now()],
+    labels: [chartTimeStamps.from, chartTimeStamps.to],
     datasets: lines.map(({ name, values }) => ({
       data: values.map((value) => ({
         x: value.timestamp,
@@ -56,6 +56,9 @@ export const getChartConfig = (chartData, selectorOption) => {
       legend: {
         display: false,
       },
+      tooltip: {
+        enabled: true,
+      },
     },
     scales: {
       x: {
@@ -67,14 +70,14 @@ export const getChartConfig = (chartData, selectorOption) => {
           },
         },
         ticks: {
-          stepSize: 1 / 12,
+          stepSize: 1 / 6,
         },
       },
       y: {
         position: "right",
         ticks: {
-          maxTicksLimit: 6,
-          stepSize: 10,
+          maxTicksLimit: 5,
+          stepSize: 30,
         },
       },
     },

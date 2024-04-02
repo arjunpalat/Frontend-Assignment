@@ -22,7 +22,7 @@ export const fetcherLogs = async (logs, to, from, query) => {
       await MimicLogs.fetchPreviousLogs({
         startTs: offsetTs - tsDifference / 10,
         endTs: offsetTs,
-        limit: 20,
+        limit: 40,
       })
     ).reverse();
     return previousLogs;
