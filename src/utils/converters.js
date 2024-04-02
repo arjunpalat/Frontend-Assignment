@@ -1,3 +1,20 @@
+const validQueries = [
+  { label: "Last 5 minutes", value: 5 * 60 * 1000, query: "last-5-minutes" },
+  {
+    label: "Last 15 minutes",
+    value: 15 * 60 * 1000,
+    query: "last-15-minutes",
+  },
+  {
+    label: "Last 30 minutes",
+    value: 30 * 60 * 1000,
+    query: "last-30-minutes",
+  },
+  { label: "Last 1 hour", value: 60 * 60 * 1000, query: "last-1-hour" },
+  { label: "Last 3 hours", value: 3 * 60 * 60 * 1000, query: "last-3-hours" },
+  { label: "Last 6 hours", value: 6 * 60 * 60 * 1000, query: "last-6-hours" },
+];
+
 export const ISOtoTimestamp = (iso) => {
   return new Date(iso).getTime();
 };
@@ -27,7 +44,6 @@ export const formatLogTimestamp = (timestamp) => {
     "Nov",
     "Dec",
   ];
-
   const month = monthNames[date.getMonth()];
   const day = date.getDate().toString();
   const hours = ("0" + date.getHours()).slice(-2); // Add leading zero if needed
@@ -56,4 +72,9 @@ export const generateRangeQueryUrlParams = (from, to) => {
   const encodedTo = encodeURIComponent(toLocaleISOString(to));
   const query = "range";
   return { query, from: encodedFrom, to: encodedTo };
+};
+
+export const validateQuery = (query) => {
+  const option = validQueries.find((option) => option.query === query);
+  return option ? option : null;
 };

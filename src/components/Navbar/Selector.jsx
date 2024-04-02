@@ -1,9 +1,12 @@
 import { useState, useEffect } from "react";
 import Dropdown from "./Dropdown";
-import { chevron, validateQuery } from "./index.js";
-import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
+import { chevron } from "./index.js";
+import { validateQuery } from "../../utils/converters.js";
+import { useSearchParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 const Selector = () => {
+  const { pathname } = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const [selectorOption, setSelectorOption] = useState(null);
@@ -11,9 +14,8 @@ const Selector = () => {
   useEffect(() => {
     const q = searchParams.get("query");
     const option = validateQuery(q);
-    if (q === "range") {
-      setSelectorOption({ label: "Custom Range", value: 0, query: "range" });
-    } else if (option) {
+    console.log(option);
+    if (option) {
       setSelectorOption(option);
     } else {
       setSelectorOption({
@@ -21,9 +23,10 @@ const Selector = () => {
         value: 5 * 60 * 1000,
         query: "last-5-minutes",
       });
-      setSearchParams({ query: "last-5-minutes" });
+      (pathname === "/metrics" || pathname === "/logs") &&
+        setSearchParams({ query: "last-5-minutes" });
     }
-  }, [searchParams]);
+  }, [searchParams, pathname]);
 
   const toggleSelector = () => {
     setIsOpen(!isOpen);
@@ -34,6 +37,7 @@ const Selector = () => {
       <button
         className="rounded border border-gray5 px-2 py-1"
         onClick={toggleSelector}
+        disabled={pathname !== "/logs" && pathname !== "/metrics"}
       >
         <div className="flex gap-1.5 items-center">
           <div className="text-xs font-medium text-gray12">

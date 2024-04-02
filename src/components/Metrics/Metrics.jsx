@@ -4,6 +4,7 @@ import MetricsHeader from "./MetricsHeader";
 import LoadingIndicator from "./LoadingIndicator";
 import ChartGrid from "./ChartGrid";
 import { useUrlParams } from "../../hooks/useUrlParams";
+import { validateQuery } from "../../utils/converters";
 
 const Metrics = () => {
   const [chartData, setChartData] = useState(null);
@@ -27,7 +28,7 @@ const Metrics = () => {
         setIsFetching(false);
       }
     };
-    if (query) fetchData();
+    if (validateQuery(query)) fetchData();
   }, [toTimestamp, fromTimestamp]);
 
   return (

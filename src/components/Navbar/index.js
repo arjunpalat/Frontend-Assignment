@@ -23,10 +23,5 @@ export {
   metrics_active,
   chevron,
   dropdownOptions,
-  calendar
-};
-
-export const validateQuery = (query) => {
-  const option = dropdownOptions.find((option) => option.query === query);
-  return option ? option : null;
+  calendar,
 };

@@ -6,6 +6,7 @@ import LoadingPreviousLogs from "./LoadingPreviousLogs.jsx";
 import NewLogsIndicator from "./NewLogsIndicator.jsx";
 import { formatTimestamp } from "../../utils/converters";
 import { useUrlParams } from "../../hooks/useUrlParams.js";
+import { validateQuery } from "../../utils/converters";
 
 const Logs = () => {
   const [logs, setLogs] = useState([]);
@@ -28,7 +29,7 @@ const Logs = () => {
   };
 
   useEffect(() => {
-    if (query) {
+    if (validateQuery(query)) {
       setLogs([]);
       fetchAndUpdateMountLogs();
     }
