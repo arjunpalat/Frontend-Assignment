@@ -1,8 +1,44 @@
-# React + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# Frontend-Assignment
 
-Currently, two official plugins are available:
+Logs and Metrics 
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+
+
+## Live Demo
+
+""
+
+
+## Installation
+
+To run the app locally on your system, follow the instructions.
+
+ ### Pre-requisites
+   1. Node.js
+   2. Git (optional; to clone the repository)
+
+ ### Instructions
+
+
+
+
+1) Download the project files or use Git Clone using your Terminal at the desired directory
+```bash
+git clone https://github.com/arjunpalat/Frontend-Assignment.git
+```  
+2) Install dependencies (might take some time)
+
+```bash
+npm install
+```
+
+3) Start the server
+
+```bash
+npm run dev
+```
+
+Once the server starts running, the project opens automatically in your default browser. If not, it can be accessed via the link:
+
+http://localhost:5173/metrics
