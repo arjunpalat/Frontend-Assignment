@@ -14,7 +14,6 @@ const Selector = () => {
   useEffect(() => {
     const q = searchParams.get("query");
     const option = validateQuery(q);
-    console.log(option);
     if (option) {
       setSelectorOption(option);
     } else {

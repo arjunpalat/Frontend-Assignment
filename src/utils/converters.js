@@ -13,6 +13,7 @@ const validQueries = [
   { label: "Last 1 hour", value: 60 * 60 * 1000, query: "last-1-hour" },
   { label: "Last 3 hours", value: 3 * 60 * 60 * 1000, query: "last-3-hours" },
   { label: "Last 6 hours", value: 6 * 60 * 60 * 1000, query: "last-6-hours" },
+  { label: "Custom Range", value: 0, query: "range" },
 ];
 
 export const ISOtoTimestamp = (iso) => {
