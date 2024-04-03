@@ -19,7 +19,6 @@ const Logs = () => {
   const [pagination, setPagination] = useState(1);
   const { fromTimestamp, toTimestamp, latestTimeRef, query } = useUrlParams();
   const hasMorePreviousLogs = pagination !== 11;
-  console.log(query);
 
   const enableSubscribtion = () => {
     const callbackFunction = (newLog) => {
@@ -144,6 +143,7 @@ const Logs = () => {
           <NewLogsIndicator
             liveLogCount={liveLogCount}
             scrollToBottom={scrollToBottom}
+            setLiveLogCount={setLiveLogCount}
           />
         )}
       </div>

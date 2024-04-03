@@ -2,7 +2,6 @@ import { logo, metrics, metrics_active, logs, logs_active } from "./index.js";
 import LinkButton from "./LinkButtons.jsx";
 import Selector from "./Selector.jsx";
 import RangePicker from "./RangePicker.jsx";
-
 const Navbar = () => {
   return (
     <nav className="h-20 bg-white">
