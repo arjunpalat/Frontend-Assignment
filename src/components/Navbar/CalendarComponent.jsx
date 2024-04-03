@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { DatePicker, InputGroup } from "rsuite";
-import "rsuite/DateRangePicker/styles/index.css";
+import "rsuite/dist/rsuite-no-reset.min.css";
 import { generateRangeQueryUrlParams } from "../../utils/converters";
 
 const CalendarComponent = ({

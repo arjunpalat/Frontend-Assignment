@@ -12,7 +12,7 @@ const LinkButton = ({ goTo, height, label, icon }) => {
   return (
     <div className="flex flex-col justfy-between gap-2.5">
       <Link
-        to={validQuery ? `${goTo}/${allParams}` : goTo}
+        to={validQuery ? `${goTo}${allParams}` : goTo}
         className="flex gap-1.5 items-center py-0 px-1 hover:scale-105"
       >
         <img

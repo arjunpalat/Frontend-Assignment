@@ -5,3 +5,9 @@
 body {
   background: #fafcff;
 }
+
+.rs-btn-primary {
+  background-color: initial;
+  color: initial;
+  border-color: initial;
+}

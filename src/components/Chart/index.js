@@ -75,7 +75,8 @@ export const getChartConfig = (chartData, chartTimeStamps) => {
           },
         },
         ticks: {
-          stepSize: 1 / 6,
+          stepSize: 1 / 60,
+          maxTicksLimit: 8,
         },
       },
       y: {
