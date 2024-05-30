@@ -1,4 +1,4 @@
-import logo from "../../assets/tf_logo.svg";
+import logo from "../../assets/tf_logo.png";
 import logs from "../../assets/list.svg";
 import logs_active from "../../assets/list-active.svg";
 import metrics from "../../assets/metrics.svg";

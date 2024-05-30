@@ -1,4 +1,4 @@
-import { logo, metrics, metrics_active, logs, logs_active } from "./index.js";
+import { metrics, metrics_active, logs, logs_active } from "./index.js";
 import LinkButton from "./LinkButtons.jsx";
 import Selector from "./Selector.jsx";
 import RangePicker from "./RangePicker.jsx";
@@ -7,7 +7,7 @@ const Navbar = () => {
     <nav className="h-20 bg-white">
       <div className="flex px-4 h-full py-4 justify-between items-center">
         <div className="flex gap-10">
-          <img src={logo} alt="Logo" className="h-8" />
+          <div className="h-8 font-bold text-teal-500 text-xl">⚙️ LOGMET</div>
           <div className="flex gap-5">
             <LinkButton
               goTo="/metrics"

@@ -13,7 +13,13 @@ const App = () => {
         <Route path="/logs" element={<Logs />} />
         <Route
           path="/"
-          element={<h2 className="text-center">Logs and Metrics App</h2>}
+          element={
+            <div className="text-center">
+              <h1 className="text-red-500 p-8 text-3xl">
+                Please choose Metrics or Logs to view updates.
+              </h1>
+            </div>
+          }
         />
         <Route path="/metrics" element={<Metrics />} />
         <Route path="/chart" element={<ChartComponent />} />
