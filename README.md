@@ -1,5 +1,5 @@
 
-# Frontend-Assignment
+# LOGMET
 
 Logs and Metrics 
 
@@ -7,7 +7,7 @@ Logs and Metrics
 
 ## Live Demo
 
-""
+https://arjun-logmet.onrender.com
 
 
 ## Installation
@@ -41,4 +41,4 @@ npm run dev
 
 Once the server starts running, the project opens automatically in your default browser. If not, it can be accessed via the link:
 
-http://localhost:5173/metrics
+http://localhost:5173/
